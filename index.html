@@ -4,14 +4,73 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TOP 차광망 - 최고의 차광 솔루션</title>
+  <script>
+    // FOUC 방지: 페인트 전에 테마 적용
+    (function () {
+      try {
+        var saved = localStorage.getItem('theme');
+        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var theme = saved || (prefersDark ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    })();
+  </script>
   <style>
+    /* ── 테마 변수 ── */
+    :root {
+      --bg-page: #ffffff;
+      --bg-section: #f5f5f7;
+      --bg-accent: #000000;
+      --bg-card: #ffffff;
+      --bg-card-on-accent: #1c1c1e;
+      --text-primary: #1d1d1f;
+      --text-secondary: #6e6e73;
+      --text-on-accent: #f5f5f7;
+      --text-on-accent-muted: #a1a1a6;
+      --header-bg: rgba(255, 255, 255, 0.85);
+      --header-border: rgba(0, 0, 0, 0.08);
+      --mobile-nav-bg: rgba(255, 255, 255, 0.97);
+      --mobile-nav-divider: #f0f0f0;
+      --hamburger: #1d1d1f;
+      --footer-border: #d2d2d7;
+      --contact-btn-bg: #1d1d1f;
+      --contact-btn-bg-hover: #3a3a3c;
+      --contact-btn-text: #ffffff;
+      --hero-gradient-end: #aaaaaa;
+    }
+
+    [data-theme="dark"] {
+      --bg-page: #000000;
+      --bg-section: #1c1c1e;
+      --bg-accent: #000000;
+      --bg-card: #2c2c2e;
+      --bg-card-on-accent: #2c2c2e;
+      --text-primary: #f5f5f7;
+      --text-secondary: #a1a1a6;
+      --text-on-accent: #f5f5f7;
+      --text-on-accent-muted: #a1a1a6;
+      --header-bg: rgba(0, 0, 0, 0.75);
+      --header-border: rgba(255, 255, 255, 0.1);
+      --mobile-nav-bg: rgba(0, 0, 0, 0.97);
+      --mobile-nav-divider: #2c2c2e;
+      --hamburger: #f5f5f7;
+      --footer-border: #2c2c2e;
+      --contact-btn-bg: #f5f5f7;
+      --contact-btn-bg-hover: #d2d2d7;
+      --contact-btn-text: #1d1d1f;
+      --hero-gradient-end: #888888;
+    }
+
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       font-family: -apple-system, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
-      background: #fff;
-      color: #1d1d1f;
+      background: var(--bg-page);
+      color: var(--text-primary);
       -webkit-font-smoothing: antialiased;
+      transition: background 0.3s ease, color 0.3s ease;
     }
 
     /* ── 헤더 ── */
@@ -19,35 +78,67 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(255,255,255,0.85);
+      background: var(--header-bg);
       backdrop-filter: saturate(180%) blur(20px);
       -webkit-backdrop-filter: saturate(180%) blur(20px);
-      border-bottom: 1px solid rgba(0,0,0,0.08);
+      border-bottom: 1px solid var(--header-border);
       height: 52px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 0 24px;
+      transition: background 0.3s ease, border-color 0.3s ease;
     }
     .logo {
       font-size: 1rem;
       font-weight: 700;
-      color: #1d1d1f;
+      color: var(--text-primary);
       letter-spacing: -0.3px;
       white-space: nowrap;
     }
-    .logo span { color: #6e6e73; font-weight: 400; }
+    .logo span { color: var(--text-secondary); font-weight: 400; }
 
+    .nav-wrap { display: flex; align-items: center; gap: 16px; }
     nav { display: flex; gap: 20px; }
     nav a {
       font-size: 0.8rem;
-      color: #1d1d1f;
+      color: var(--text-primary);
       text-decoration: none;
       opacity: 0.8;
       transition: opacity 0.2s;
       white-space: nowrap;
     }
     nav a:hover { opacity: 1; }
+
+    /* 테마 토글 버튼 */
+    .theme-toggle {
+      background: transparent;
+      border: 1px solid var(--header-border);
+      color: var(--text-primary);
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      transition: background 0.2s, border-color 0.2s, transform 0.2s;
+    }
+    .theme-toggle:hover { transform: scale(1.05); }
+    .theme-toggle svg {
+      width: 16px;
+      height: 16px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .theme-toggle .icon-sun { display: none; }
+    .theme-toggle .icon-moon { display: block; }
+    [data-theme="dark"] .theme-toggle .icon-sun { display: block; }
+    [data-theme="dark"] .theme-toggle .icon-moon { display: none; }
 
     /* 모바일 햄버거 */
     .menu-toggle {
@@ -61,7 +152,7 @@
       display: block;
       width: 22px;
       height: 2px;
-      background: #1d1d1f;
+      background: var(--hamburger);
       border-radius: 2px;
       transition: all 0.3s;
     }
@@ -70,9 +161,9 @@
       position: fixed;
       top: 52px;
       left: 0; right: 0;
-      background: rgba(255,255,255,0.97);
+      background: var(--mobile-nav-bg);
       backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(0,0,0,0.08);
+      border-bottom: 1px solid var(--header-border);
       padding: 16px 24px;
       flex-direction: column;
       gap: 0;
@@ -82,16 +173,16 @@
       display: block;
       padding: 14px 0;
       font-size: 1rem;
-      color: #1d1d1f;
+      color: var(--text-primary);
       text-decoration: none;
-      border-bottom: 1px solid #f0f0f0;
+      border-bottom: 1px solid var(--mobile-nav-divider);
     }
     .mobile-nav a:last-child { border-bottom: none; }
     .mobile-nav.open { display: flex; }
 
     /* ── 히어로 ── */
     .hero {
-      background: #000;
+      background: var(--bg-accent);
       color: #f5f5f7;
       text-align: center;
       padding: 100px 24px 80px;
@@ -119,7 +210,7 @@
       line-height: 1.05;
       margin-bottom: 18px;
       position: relative;
-      background: linear-gradient(180deg, #fff 60%, #aaa);
+      background: linear-gradient(180deg, #fff 60%, var(--hero-gradient-end));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -175,7 +266,7 @@
       text-align: center;
       font-size: 0.8rem;
       font-weight: 600;
-      color: #6e6e73;
+      color: var(--text-secondary);
       letter-spacing: 0.5px;
       margin-bottom: 8px;
       text-transform: uppercase;
@@ -185,41 +276,42 @@
       font-size: 2.2rem;
       font-weight: 700;
       letter-spacing: -1px;
-      color: #1d1d1f;
+      color: var(--text-primary);
       margin-bottom: 8px;
     }
     .section-sub {
       text-align: center;
-      color: #6e6e73;
+      color: var(--text-secondary);
       font-size: 1rem;
       margin-bottom: 48px;
       font-weight: 300;
     }
 
     /* ── 특징 그리드 ── */
-    .features-bg { background: #f5f5f7; }
+    .features-bg { background: var(--bg-section); transition: background 0.3s ease; }
     .features {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 16px;
     }
     .feature-card {
-      background: #fff;
+      background: var(--bg-card);
       border-radius: 18px;
       padding: 36px 28px;
+      transition: background 0.3s ease;
     }
     .feature-icon { font-size: 2rem; margin-bottom: 14px; display: block; }
     .feature-card h3 {
       font-size: 1rem;
       font-weight: 600;
-      color: #1d1d1f;
+      color: var(--text-primary);
       margin-bottom: 8px;
       letter-spacing: -0.3px;
     }
-    .feature-card p { font-size: 0.88rem; color: #6e6e73; line-height: 1.6; }
+    .feature-card p { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6; }
 
     /* ── 제품 섹션 ── */
-    .product-bg { background: #000; }
+    .product-bg { background: var(--bg-accent); transition: background 0.3s ease; }
     .product-bg .section-title { color: #f5f5f7; }
     .product-bg .section-eyebrow { color: #6e6e73; }
     .product-bg .section-sub { color: #6e6e73; }
@@ -230,10 +322,11 @@
       gap: 12px;
     }
     .product-card {
-      background: #1c1c1e;
+      background: var(--bg-card-on-accent);
       border-radius: 18px;
       padding: 28px 18px;
       text-align: center;
+      transition: background 0.3s ease;
     }
     .product-card .pct {
       font-size: 2rem;
@@ -268,20 +361,21 @@
       gap: 12px;
     }
     .use-card {
-      background: #f5f5f7;
+      background: var(--bg-section);
       border-radius: 18px;
       padding: 32px 20px;
       text-align: center;
+      transition: background 0.3s ease;
     }
     .use-card .icon { font-size: 2rem; margin-bottom: 12px; display: block; }
-    .use-card h4 { font-size: 0.9rem; font-weight: 600; color: #1d1d1f; margin-bottom: 6px; }
-    .use-card p { font-size: 0.8rem; color: #6e6e73; line-height: 1.5; }
+    .use-card h4 { font-size: 0.9rem; font-weight: 600; color: var(--text-primary); margin-bottom: 6px; }
+    .use-card p { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.5; }
 
     /* ── 문의 ── */
-    .contact-bg { background: #f5f5f7; }
+    .contact-bg { background: var(--bg-section); transition: background 0.3s ease; }
     .contact-inner { text-align: center; max-width: 680px; margin: 0 auto; }
-    .contact-inner h2 { font-size: 2.2rem; font-weight: 700; letter-spacing: -1px; margin-bottom: 12px; }
-    .contact-inner > p { font-size: 1rem; color: #6e6e73; margin-bottom: 36px; }
+    .contact-inner h2 { font-size: 2.2rem; font-weight: 700; letter-spacing: -1px; margin-bottom: 12px; color: var(--text-primary); }
+    .contact-inner > p { font-size: 1rem; color: var(--text-secondary); margin-bottom: 36px; }
     .contact-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -290,17 +384,18 @@
       margin: 0 auto 36px;
     }
     .ci-box {
-      background: #fff;
+      background: var(--bg-card);
       border-radius: 14px;
       padding: 20px;
       text-align: left;
+      transition: background 0.3s ease;
     }
-    .ci-label { font-size: 0.78rem; color: #6e6e73; margin-bottom: 4px; }
-    .ci-value { font-size: 0.95rem; font-weight: 600; color: #1d1d1f; }
+    .ci-label { font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 4px; }
+    .ci-value { font-size: 0.95rem; font-weight: 600; color: var(--text-primary); }
     .contact-btn {
       display: inline-block;
-      background: #1d1d1f;
-      color: #fff;
+      background: var(--contact-btn-bg);
+      color: var(--contact-btn-text);
       padding: 13px 32px;
       border-radius: 980px;
       font-size: 0.9rem;
@@ -308,18 +403,19 @@
       text-decoration: none;
       transition: background 0.2s;
     }
-    .contact-btn:hover { background: #3a3a3c; }
+    .contact-btn:hover { background: var(--contact-btn-bg-hover); }
 
     /* ── 푸터 ── */
     footer {
-      border-top: 1px solid #d2d2d7;
-      background: #f5f5f7;
+      border-top: 1px solid var(--footer-border);
+      background: var(--bg-section);
       padding: 28px 24px;
       font-size: 0.76rem;
-      color: #6e6e73;
+      color: var(--text-secondary);
       line-height: 1.9;
+      transition: background 0.3s ease, border-color 0.3s ease;
     }
-    footer strong { color: #1d1d1f; }
+    footer strong { color: var(--text-primary); }
 
     /* ════════════════════════════
        모바일 반응형 (768px 이하)
@@ -329,6 +425,7 @@
       /* 헤더 */
       nav { display: none; }
       .menu-toggle { display: flex; }
+      .nav-wrap { gap: 10px; }
 
       /* 히어로 */
       .hero { padding: 72px 20px 60px; }
@@ -379,14 +476,25 @@
 <!-- 헤더 -->
 <header>
   <div class="logo">TOP 차광망 <span>by TopShade</span></div>
-  <nav>
-    <a href="#features">특징</a>
-    <a href="#products">제품</a>
-    <a href="#usecases">활용</a>
-    <a href="#contact">문의</a>
-  </nav>
-  <div class="menu-toggle" onclick="toggleMenu()" aria-label="메뉴">
-    <span></span><span></span><span></span>
+  <div class="nav-wrap">
+    <nav>
+      <a href="#features">특징</a>
+      <a href="#products">제품</a>
+      <a href="#usecases">활용</a>
+      <a href="#contact">문의</a>
+    </nav>
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="테마 변경">
+      <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+      <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="12" r="4"/>
+        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+      </svg>
+    </button>
+    <div class="menu-toggle" onclick="toggleMenu()" aria-label="메뉴">
+      <span></span><span></span><span></span>
+    </div>
   </div>
 </header>
 
@@ -513,6 +621,12 @@
   }
   function closeMenu() {
     document.getElementById('mobileNav').classList.remove('open');
+  }
+  function toggleTheme() {
+    var current = document.documentElement.getAttribute('data-theme') || 'light';
+    var next = current === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem('theme', next); } catch (e) {}
   }
   // 스크롤 시 메뉴 닫기
   window.addEventListener('scroll', closeMenu);
