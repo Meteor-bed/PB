@@ -39,6 +39,12 @@
       --contact-btn-bg-hover: #3a3a3c;
       --contact-btn-text: #ffffff;
       --hero-gradient-end: #aaaaaa;
+      --input-bg: #ffffff;
+      --input-border: #d2d2d7;
+      --input-focus: #2997ff;
+      --input-text: #1d1d1f;
+      --input-placeholder: #86868b;
+      --form-divider: #d2d2d7;
     }
 
     [data-theme="dark"] {
@@ -61,6 +67,12 @@
       --contact-btn-bg-hover: #d2d2d7;
       --contact-btn-text: #1d1d1f;
       --hero-gradient-end: #888888;
+      --input-bg: #2c2c2e;
+      --input-border: #3a3a3c;
+      --input-focus: #2997ff;
+      --input-text: #f5f5f7;
+      --input-placeholder: #6e6e73;
+      --form-divider: #2c2c2e;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -405,6 +417,113 @@
     }
     .contact-btn:hover { background: var(--contact-btn-bg-hover); }
 
+    /* ── 상담 폼 ── */
+    .form-divider {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      max-width: 500px;
+      margin: 36px auto 28px;
+      color: var(--text-secondary);
+      font-size: 0.82rem;
+    }
+    .form-divider::before, .form-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--form-divider);
+    }
+    .consult-form {
+      max-width: 500px;
+      margin: 0 auto;
+      text-align: left;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .form-field { margin-bottom: 12px; }
+    .form-field label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+      letter-spacing: 0.2px;
+    }
+    .form-field input,
+    .form-field select,
+    .form-field textarea {
+      width: 100%;
+      padding: 12px 14px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      color: var(--input-text);
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      border-radius: 12px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s, background 0.3s ease;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+    .form-field textarea {
+      min-height: 110px;
+      resize: vertical;
+      line-height: 1.5;
+    }
+    .form-field select {
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none' stroke='%236e6e73' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='1 1.5 6 6.5 11 1.5'/></svg>");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 40px;
+    }
+    .form-field input::placeholder,
+    .form-field textarea::placeholder { color: var(--input-placeholder); }
+    .form-field input:focus,
+    .form-field select:focus,
+    .form-field textarea:focus {
+      border-color: var(--input-focus);
+      box-shadow: 0 0 0 3px rgba(41, 151, 255, 0.18);
+    }
+    .form-submit {
+      width: 100%;
+      padding: 14px 20px;
+      background: var(--contact-btn-bg);
+      color: var(--contact-btn-text);
+      border: none;
+      border-radius: 980px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.2s, opacity 0.2s;
+      margin-top: 8px;
+    }
+    .form-submit:hover { background: var(--contact-btn-bg-hover); }
+    .form-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+    .form-status {
+      margin-top: 14px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      text-align: center;
+      display: none;
+    }
+    .form-status.show { display: block; }
+    .form-status.success {
+      background: rgba(48, 209, 88, 0.12);
+      color: #248a3d;
+    }
+    .form-status.error {
+      background: rgba(255, 69, 58, 0.12);
+      color: #c93b30;
+    }
+    [data-theme="dark"] .form-status.success { color: #30d158; }
+    [data-theme="dark"] .form-status.error { color: #ff6961; }
+
     /* ── 푸터 ── */
     footer {
       border-top: 1px solid var(--footer-border);
@@ -458,6 +577,7 @@
       .contact-grid { grid-template-columns: 1fr; max-width: 100%; gap: 10px; }
       .ci-box { padding: 16px 18px; }
       .contact-btn { width: 100%; max-width: 280px; text-align: center; padding: 14px 28px; }
+      .form-row { grid-template-columns: 1fr; gap: 0; }
 
       /* 푸터 */
       footer { text-align: center; font-size: 0.72rem; }
@@ -607,6 +727,43 @@
         <div class="ci-box"><div class="ci-label">🕐 운영시간</div><div class="ci-value">평일 09:00~18:00</div></div>
       </div>
       <a href="tel:15880000" class="contact-btn">전화 상담하기</a>
+
+      <div class="form-divider">또는 폼으로 신청하기</div>
+
+      <form class="consult-form" id="consultForm" action="https://formspree.io/f/meenppqe" method="POST">
+        <div class="form-row">
+          <div class="form-field">
+            <label for="cf-name">이름</label>
+            <input id="cf-name" type="text" name="name" placeholder="홍길동" required />
+          </div>
+          <div class="form-field">
+            <label for="cf-phone">연락처</label>
+            <input id="cf-phone" type="tel" name="phone" placeholder="010-0000-0000" required />
+          </div>
+        </div>
+        <div class="form-field">
+          <label for="cf-email">이메일 (선택)</label>
+          <input id="cf-email" type="email" name="email" placeholder="you@example.com" />
+        </div>
+        <div class="form-field">
+          <label for="cf-product">관심 제품</label>
+          <select id="cf-product" name="product">
+            <option value="">선택해 주세요</option>
+            <option value="TOP-35">TOP-35 (차광률 35%)</option>
+            <option value="TOP-50">TOP-50 (차광률 50%)</option>
+            <option value="TOP-70">TOP-70 (차광률 70%)</option>
+            <option value="TOP-80">TOP-80 (차광률 80%)</option>
+            <option value="TOP-95">TOP-95 (차광률 95%)</option>
+            <option value="추천 요청">잘 모르겠어요 — 추천 받고 싶어요</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label for="cf-message">문의 내용</label>
+          <textarea id="cf-message" name="message" placeholder="작물·시설 종류, 설치 면적, 희망 수량 등을 적어주세요." required></textarea>
+        </div>
+        <button type="submit" class="form-submit" id="consultSubmit">상담 신청하기</button>
+        <div class="form-status" id="consultStatus" role="status" aria-live="polite"></div>
+      </form>
     </div>
   </div>
 </div>
@@ -633,6 +790,46 @@
   }
   // 스크롤 시 메뉴 닫기
   window.addEventListener('scroll', closeMenu);
+
+  // 상담 폼 — Formspree AJAX 제출
+  (function () {
+    var form = document.getElementById('consultForm');
+    if (!form) return;
+    var btn = document.getElementById('consultSubmit');
+    var status = document.getElementById('consultStatus');
+
+    function showStatus(type, msg) {
+      status.className = 'form-status show ' + type;
+      status.textContent = msg;
+    }
+
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      btn.disabled = true;
+      btn.textContent = '전송 중...';
+      status.className = 'form-status';
+      try {
+        var res = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { Accept: 'application/json' }
+        });
+        if (res.ok) {
+          form.reset();
+          showStatus('success', '신청이 접수되었습니다. 빠른 시일 내에 연락드리겠습니다.');
+        } else {
+          var data = await res.json().catch(function () { return {}; });
+          var msg = (data.errors && data.errors.map(function (e) { return e.message; }).join(', ')) || '전송에 실패했습니다. 잠시 후 다시 시도해주세요.';
+          showStatus('error', msg);
+        }
+      } catch (err) {
+        showStatus('error', '네트워크 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = '상담 신청하기';
+      }
+    });
+  })();
 </script>
 
 </body>
