@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>제품 라인업 | TOP 차광망</title>
+  <script>
+    // FOUC 방지: 페인트 전에 테마 적용
+    (function () {
+      try {
+        var saved = localStorage.getItem('theme');
+        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var theme = saved || (prefersDark ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    })();
+  </script>
+  <style>
+    /* ── 테마 변수 ── */
+    :root {
+      --bg-page: #ffffff;
+      --bg-section: #f5f5f7;
+      --bg-accent: #000000;
+      --bg-card: #ffffff;
+      --bg-card-on-accent: #1c1c1e;
+      --text-primary: #1d1d1f;
+      --text-secondary: #6e6e73;
+      --text-on-accent: #f5f5f7;
+      --text-on-accent-muted: #a1a1a6;
+      --header-bg: rgba(255, 255, 255, 0.85);
+      --header-border: rgba(0, 0, 0, 0.08);
+      --mobile-nav-bg: rgba(255, 255, 255, 0.97);
+      --mobile-nav-divider: #f0f0f0;
+      --hamburger: #1d1d1f;
+      --footer-border: #d2d2d7;
+      --table-border: #d2d2d7;
+      --table-header-bg: #f5f5f7;
+      --anchor-bg: rgba(245, 245, 247, 0.8);
+      --hero-gradient-end: #aaaaaa;
+    }
+
+    [data-theme="dark"] {
+      --bg-page: #000000;
+      --bg-section: #1c1c1e;
+      --bg-accent: #000000;
+      --bg-card: #2c2c2e;
+      --bg-card-on-accent: #2c2c2e;
+      --text-primary: #f5f5f7;
+      --text-secondary: #a1a1a6;
+      --text-on-accent: #f5f5f7;
+      --text-on-accent-muted: #a1a1a6;
+      --header-bg: rgba(0, 0, 0, 0.75);
+      --header-border: rgba(255, 255, 255, 0.1);
+      --mobile-nav-bg: rgba(0, 0, 0, 0.97);
+      --mobile-nav-divider: #2c2c2e;
+      --hamburger: #f5f5f7;
+      --footer-border: #2c2c2e;
+      --table-border: #2c2c2e;
+      --table-header-bg: #2c2c2e;
+      --anchor-bg: rgba(28, 28, 30, 0.8);
+      --hero-gradient-end: #888888;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+      background: var(--bg-page);
+      color: var(--text-primary);
+      -webkit-font-smoothing: antialiased;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+    img { max-width: 100%; display: block; }
+
+    /* ── 헤더 ── */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--header-bg);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      border-bottom: 1px solid var(--header-border);
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      transition: background 0.3s ease, border-color 0.3s ease;
+    }
+    .logo { font-size: 1rem; font-weight: 700; color: var(--text-primary); letter-spacing: -0.3px; white-space: nowrap; }
+    .logo a { color: inherit; text-decoration: none; }
+    .logo span { color: var(--text-secondary); font-weight: 400; }
+
+    .nav-wrap { display: flex; align-items: center; gap: 16px; }
+    nav { display: flex; gap: 20px; }
+    nav a {
+      font-size: 0.8rem;
+      color: var(--text-primary);
+      text-decoration: none;
+      opacity: 0.8;
+      transition: opacity 0.2s;
+      white-space: nowrap;
+    }
+    nav a:hover { opacity: 1; }
+
+    .theme-toggle {
+      background: transparent;
+      border: 1px solid var(--header-border);
+      color: var(--text-primary);
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      padding: 0;
+      transition: background 0.2s, border-color 0.2s, transform 0.2s;
+    }
+    .theme-toggle:hover { transform: scale(1.05); }
+    .theme-toggle svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .theme-toggle .icon-sun { display: none; }
+    .theme-toggle .icon-moon { display: block; }
+    [data-theme="dark"] .theme-toggle .icon-sun { display: block; }
+    [data-theme="dark"] .theme-toggle .icon-moon { display: none; }
+
+    /* ── 페이지 히어로 ── */
+    .page-hero {
+      text-align: center;
+      padding: 100px 24px 60px;
+      max-width: 980px;
+      margin: 0 auto;
+    }
+    .page-hero .eyebrow {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+    .page-hero h1 {
+      font-size: 4rem;
+      font-weight: 700;
+      letter-spacing: -2px;
+      line-height: 1.05;
+      color: var(--text-primary);
+      margin-bottom: 18px;
+    }
+    .page-hero .lead {
+      font-size: 1.25rem;
+      color: var(--text-secondary);
+      max-width: 620px;
+      margin: 0 auto;
+      line-height: 1.5;
+      font-weight: 300;
+    }
+
+    /* ── 앵커 네비 ── */
+    .anchor-nav {
+      position: sticky;
+      top: 52px;
+      z-index: 50;
+      background: var(--anchor-bg);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      border-bottom: 1px solid var(--header-border);
+      transition: background 0.3s ease;
+    }
+    .anchor-nav-inner {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 14px 24px;
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .anchor-nav a {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-primary);
+      text-decoration: none;
+      padding: 6px 14px;
+      border-radius: 980px;
+      transition: background 0.2s;
+    }
+    .anchor-nav a:hover { background: var(--bg-section); }
+
+    /* ── 제품 상세 섹션 ── */
+    .product-detail {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 80px 24px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+    .product-detail.reverse .product-visual { order: 2; }
+    .product-detail.reverse .product-copy { order: 1; }
+
+    .product-visual {
+      aspect-ratio: 4 / 3;
+      border-radius: 24px;
+      overflow: hidden;
+      position: relative;
+      background: linear-gradient(135deg, #2c2c2e 0%, #1c1c1e 100%);
+    }
+    .product-visual img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .product-visual .pct-overlay {
+      position: absolute;
+      top: 24px;
+      left: 24px;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: 700;
+      padding: 8px 16px;
+      border-radius: 980px;
+      letter-spacing: -0.3px;
+    }
+
+    .product-copy .pname {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .product-copy h2 {
+      font-size: 2.6rem;
+      font-weight: 700;
+      letter-spacing: -1.5px;
+      line-height: 1.1;
+      color: var(--text-primary);
+      margin-bottom: 16px;
+    }
+    .product-copy .tagline {
+      font-size: 1.2rem;
+      color: var(--text-primary);
+      line-height: 1.4;
+      font-weight: 500;
+      margin-bottom: 16px;
+      letter-spacing: -0.3px;
+    }
+    .product-copy .desc {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 28px;
+    }
+
+    .specs {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+    .spec-item {
+      padding: 14px 16px;
+      background: var(--bg-section);
+      border-radius: 12px;
+      transition: background 0.3s ease;
+    }
+    .spec-label {
+      font-size: 0.72rem;
+      color: var(--text-secondary);
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+    .spec-value {
+      font-size: 0.95rem;
+      color: var(--text-primary);
+      font-weight: 600;
+      letter-spacing: -0.2px;
+    }
+
+    .uses-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .uses-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .use-chip {
+      font-size: 0.85rem;
+      color: var(--text-primary);
+      background: var(--bg-section);
+      padding: 8px 14px;
+      border-radius: 980px;
+      transition: background 0.3s ease;
+    }
+
+    /* 섹션 구분 - 짝수 배경 */
+    .product-detail:nth-of-type(even) {
+      background: var(--bg-section);
+      max-width: none;
+      transition: background 0.3s ease;
+    }
+    .product-detail:nth-of-type(even) > * {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .product-detail:nth-of-type(even) .spec-item,
+    .product-detail:nth-of-type(even) .use-chip {
+      background: var(--bg-card);
+    }
+
+    /* ── 비교 테이블 ── */
+    .compare-section {
+      padding: 100px 24px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .compare-section h2 {
+      font-size: 2.4rem;
+      font-weight: 700;
+      letter-spacing: -1px;
+      text-align: center;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+    }
+    .compare-section .subtitle {
+      text-align: center;
+      color: var(--text-secondary);
+      margin-bottom: 48px;
+      font-size: 1rem;
+    }
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.92rem;
+    }
+    .compare-table th, .compare-table td {
+      padding: 16px 14px;
+      text-align: left;
+      border-bottom: 1px solid var(--table-border);
+      color: var(--text-primary);
+    }
+    .compare-table th {
+      background: var(--table-header-bg);
+      font-weight: 600;
+      color: var(--text-primary);
+      font-size: 0.78rem;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+      transition: background 0.3s ease;
+    }
+    .compare-table tbody tr { transition: background 0.2s ease; }
+    .compare-table tbody tr:hover { background: var(--bg-section); }
+    .compare-table .pct-cell {
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    /* ── CTA ── */
+    .cta-section {
+      background: var(--bg-accent);
+      color: #f5f5f7;
+      text-align: center;
+      padding: 100px 24px;
+      transition: background 0.3s ease;
+    }
+    .cta-section h2 {
+      font-size: 2.6rem;
+      font-weight: 700;
+      letter-spacing: -1.5px;
+      line-height: 1.1;
+      margin-bottom: 16px;
+      background: linear-gradient(180deg, #fff 60%, var(--hero-gradient-end));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .cta-section p {
+      font-size: 1.1rem;
+      color: #a1a1a6;
+      margin-bottom: 32px;
+      max-width: 520px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.5;
+    }
+    .cta-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn-primary {
+      background: #2997ff;
+      color: white;
+      padding: 13px 30px;
+      border-radius: 980px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .btn-primary:hover { background: #0077ed; }
+    .btn-outline {
+      color: #2997ff;
+      font-size: 0.95rem;
+      font-weight: 500;
+      text-decoration: none;
+      padding: 13px 0;
+      transition: opacity 0.2s;
+    }
+    .btn-outline::after { content: ' ›'; }
+    .btn-outline:hover { opacity: 0.7; }
+
+    /* ── 푸터 ── */
+    footer {
+      border-top: 1px solid var(--footer-border);
+      background: var(--bg-section);
+      padding: 28px 24px;
+      font-size: 0.76rem;
+      color: var(--text-secondary);
+      line-height: 1.9;
+      transition: background 0.3s ease, border-color 0.3s ease;
+    }
+    footer strong { color: var(--text-primary); }
+
+    /* ── 모바일 ── */
+    @media (max-width: 768px) {
+      .page-hero { padding: 64px 20px 40px; }
+      .page-hero h1 { font-size: 2.4rem; letter-spacing: -1.2px; }
+      .page-hero .lead { font-size: 1rem; }
+
+      .anchor-nav-inner { padding: 10px 16px; gap: 4px; }
+      .anchor-nav a { font-size: 0.78rem; padding: 5px 10px; }
+
+      .product-detail {
+        grid-template-columns: 1fr;
+        gap: 32px;
+        padding: 56px 20px;
+      }
+      .product-detail.reverse .product-visual { order: 0; }
+      .product-detail.reverse .product-copy { order: 0; }
+
+      .product-copy h2 { font-size: 1.9rem; }
+      .product-copy .tagline { font-size: 1.05rem; }
+      .specs { grid-template-columns: 1fr; }
+
+      .compare-section { padding: 64px 20px; }
+      .compare-section h2 { font-size: 1.8rem; }
+      .compare-table { font-size: 0.82rem; }
+      .compare-table th, .compare-table td { padding: 12px 8px; }
+
+      .cta-section { padding: 64px 20px; }
+      .cta-section h2 { font-size: 1.9rem; letter-spacing: -1px; }
+      .cta-buttons { flex-direction: column; align-items: center; gap: 8px; }
+      .btn-primary { width: 100%; max-width: 280px; text-align: center; }
+
+      footer { text-align: center; font-size: 0.72rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- 헤더 -->
+<header>
+  <div class="logo"><a href="index.html">TOP 차광망 <span>by TopShade</span></a></div>
+  <div class="nav-wrap">
+    <nav>
+      <a href="index.html">홈</a>
+      <a href="index.html#features">특징</a>
+      <a href="index.html#usecases">활용</a>
+      <a href="index.html#contact">문의</a>
+    </nav>
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="테마 변경">
+      <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+      <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="12" r="4"/>
+        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+      </svg>
+    </button>
+  </div>
+</header>
+
+<!-- 페이지 히어로 -->
+<section class="page-hero">
+  <p class="eyebrow">Product Lineup</p>
+  <h1>차광률부터 다른<br>5가지 라인업.</h1>
+  <p class="lead">35%의 은은한 그늘부터 95%의 완벽한 차단까지.<br>현장에 꼭 맞는 차광망을 찾아보세요.</p>
+</section>
+
+<!-- 앵커 네비 -->
+<div class="anchor-nav">
+  <div class="anchor-nav-inner">
+    <a href="#top-35">TOP-35</a>
+    <a href="#top-50">TOP-50</a>
+    <a href="#top-70">TOP-70</a>
+    <a href="#top-80">TOP-80</a>
+    <a href="#top-95">TOP-95</a>
+    <a href="#compare">비교</a>
+  </div>
+</div>
+
+<!-- TOP-35 -->
+<section class="product-detail" id="top-35">
+  <div class="product-visual">
+    <span class="pct-overlay">차광률 35%</span>
+    <img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=1600&q=80&auto=format&fit=crop" alt="잎채소 묘목장과 경량 비닐하우스" loading="lazy" />
+  </div>
+  <div class="product-copy">
+    <p class="pname">TOP-35</p>
+    <h2>은은한 그늘.<br>건강한 시작.</h2>
+    <p class="tagline">잎채소와 묘목에 알맞은 입문용 차광망입니다.</p>
+    <p class="desc">강한 햇빛을 35%만 부드럽게 가려 광합성을 방해하지 않으면서도 모종의 잎이 타지 않도록 보호합니다. 가볍고 다루기 쉬워 처음 차광망을 사용하는 농가에 권장합니다.</p>
+    <div class="specs">
+      <div class="spec-item"><div class="spec-label">차광률</div><div class="spec-value">약 35%</div></div>
+      <div class="spec-item"><div class="spec-label">소재</div><div class="spec-value">HDPE 모노필라멘트</div></div>
+      <div class="spec-item"><div class="spec-label">색상</div><div class="spec-value">흑색 / 녹색</div></div>
+      <div class="spec-item"><div class="spec-label">표준 폭</div><div class="spec-value">2m · 4m · 6m</div></div>
+    </div>
+    <p class="uses-title">이런 곳에 좋아요</p>
+    <div class="uses-list">
+      <span class="use-chip">경량 하우스</span>
+      <span class="use-chip">묘목장</span>
+      <span class="use-chip">콩과 작물</span>
+      <span class="use-chip">바람 보호</span>
+    </div>
+  </div>
+</section>
+
+<!-- TOP-50 -->
+<section class="product-detail reverse" id="top-50">
+  <div class="product-visual">
+    <span class="pct-overlay">차광률 50%</span>
+    <img src="https://images.unsplash.com/photo-1592419044706-39796d40f98c?w=1600&q=80&auto=format&fit=crop" alt="과채류 비닐하우스 내부" loading="lazy" />
+  </div>
+  <div class="product-copy">
+    <p class="pname">TOP-50</p>
+    <h2>가장 균형 잡힌<br>인기 No.1 모델.</h2>
+    <p class="tagline">과채류와 화훼 재배에 가장 많이 선택되는 베스트셀러.</p>
+    <p class="desc">광량과 통풍, 차광 효과 사이의 균형이 가장 이상적인 50% 모델. 토마토, 오이 같은 과채류는 물론 절화·관엽 식물의 생육에 적합한 환경을 만들어줍니다.</p>
+    <div class="specs">
+      <div class="spec-item"><div class="spec-label">차광률</div><div class="spec-value">약 50%</div></div>
+      <div class="spec-item"><div class="spec-label">소재</div><div class="spec-value">UV 안정 HDPE</div></div>
+      <div class="spec-item"><div class="spec-label">권장 사용</div><div class="spec-value">5년 이상</div></div>
+      <div class="spec-item"><div class="spec-label">표준 폭</div><div class="spec-value">2m ~ 8m 맞춤</div></div>
+    </div>
+    <p class="uses-title">이런 곳에 좋아요</p>
+    <div class="uses-list">
+      <span class="use-chip">과채류 재배</span>
+      <span class="use-chip">화훼단지</span>
+      <span class="use-chip">육묘장</span>
+      <span class="use-chip">절화·관엽</span>
+    </div>
+  </div>
+</section>
+
+<!-- TOP-70 -->
+<section class="product-detail" id="top-70">
+  <div class="product-visual">
+    <span class="pct-overlay">차광률 70%</span>
+    <img src="https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?w=1600&q=80&auto=format&fit=crop" alt="엽채류 재배 환경" loading="lazy" />
+  </div>
+  <div class="product-copy">
+    <p class="pname">TOP-70</p>
+    <h2>그늘을 좋아하는<br>작물을 위해.</h2>
+    <p class="tagline">엽채류·버섯·난과 작물에 최적의 광 조건을 제공합니다.</p>
+    <p class="desc">햇빛의 70%를 차단해 직사광에 약한 작물에게 시원하고 그늘진 환경을 만들어줍니다. 한여름 시설 내부 온도를 낮추는 데도 효과적이며, 잎채소의 잎 마름과 색 빠짐을 방지합니다.</p>
+    <div class="specs">
+      <div class="spec-item"><div class="spec-label">차광률</div><div class="spec-value">약 70%</div></div>
+      <div class="spec-item"><div class="spec-label">통풍</div><div class="spec-value">메쉬 구조 유지</div></div>
+      <div class="spec-item"><div class="spec-label">온도 저감</div><div class="spec-value">최대 6~8℃</div></div>
+      <div class="spec-item"><div class="spec-label">표준 폭</div><div class="spec-value">맞춤 재단 가능</div></div>
+    </div>
+    <p class="uses-title">이런 곳에 좋아요</p>
+    <div class="uses-list">
+      <span class="use-chip">엽채류</span>
+      <span class="use-chip">버섯 재배사</span>
+      <span class="use-chip">난·관엽</span>
+      <span class="use-chip">육묘장 여름철</span>
+    </div>
+  </div>
+</section>
+
+<!-- TOP-80 -->
+<section class="product-detail reverse" id="top-80">
+  <div class="product-visual">
+    <span class="pct-overlay">차광률 80%</span>
+    <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1600&q=80&auto=format&fit=crop" alt="야외 캐노피와 그늘막" loading="lazy" />
+  </div>
+  <div class="product-copy">
+    <p class="pname">TOP-80</p>
+    <h2>강한 햇빛.<br>완벽한 그늘.</h2>
+    <p class="tagline">축사·주차장·캐노피에 강력한 그늘을 만들어 줍니다.</p>
+    <p class="desc">햇빛을 80% 차단하면서도 통풍은 유지해 한여름에도 시원한 공간을 만듭니다. 가축의 더위 스트레스 완화, 차량 표면 온도 저감, 옥외 작업 공간 보호에 효과적입니다.</p>
+    <div class="specs">
+      <div class="spec-item"><div class="spec-label">차광률</div><div class="spec-value">약 80%</div></div>
+      <div class="spec-item"><div class="spec-label">강도</div><div class="spec-value">고밀도 편직</div></div>
+      <div class="spec-item"><div class="spec-label">UV 차단</div><div class="spec-value">UV-A·B 95%+</div></div>
+      <div class="spec-item"><div class="spec-label">옵션</div><div class="spec-value">아일렛·로프 가공</div></div>
+    </div>
+    <p class="uses-title">이런 곳에 좋아요</p>
+    <div class="uses-list">
+      <span class="use-chip">축사·계사</span>
+      <span class="use-chip">주차장 캐노피</span>
+      <span class="use-chip">옥외 작업장</span>
+      <span class="use-chip">놀이터 그늘막</span>
+    </div>
+  </div>
+</section>
+
+<!-- TOP-95 -->
+<section class="product-detail" id="top-95">
+  <div class="product-visual">
+    <span class="pct-overlay">차광률 95%</span>
+    <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=1600&q=80&auto=format&fit=crop" alt="건축 현장 가림막" loading="lazy" />
+  </div>
+  <div class="product-copy">
+    <p class="pname">TOP-95</p>
+    <h2>거의 모든 빛을<br>차단하는 한 장.</h2>
+    <p class="tagline">건축 가림막과 완전 차광이 필요한 시설에 사용합니다.</p>
+    <p class="desc">햇빛의 95%를 차단해 외부 시야와 직사광선을 거의 완전히 막습니다. 건축 현장의 분진·시야 가림막, 비닐하우스 보온 보조, 빛에 매우 민감한 공정용 가림에 사용됩니다.</p>
+    <div class="specs">
+      <div class="spec-item"><div class="spec-label">차광률</div><div class="spec-value">약 95%</div></div>
+      <div class="spec-item"><div class="spec-label">두께</div><div class="spec-value">고밀도 편직</div></div>
+      <div class="spec-item"><div class="spec-label">색상</div><div class="spec-value">흑색</div></div>
+      <div class="spec-item"><div class="spec-label">사용 환경</div><div class="spec-value">실내·외 모두</div></div>
+    </div>
+    <p class="uses-title">이런 곳에 좋아요</p>
+    <div class="uses-list">
+      <span class="use-chip">건축 현장 가림막</span>
+      <span class="use-chip">분진 차단</span>
+      <span class="use-chip">비닐하우스 보온</span>
+      <span class="use-chip">완전 차광 공정</span>
+    </div>
+  </div>
+</section>
+
+<!-- 비교 테이블 -->
+<section class="compare-section" id="compare">
+  <h2>한눈에 비교하기</h2>
+  <p class="subtitle">차광률·용도·추천 환경을 한 번에 확인하세요</p>
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th>모델</th>
+        <th>차광률</th>
+        <th>주요 용도</th>
+        <th>특징</th>
+        <th>등급</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td class="pct-cell">TOP-35</td><td>35%</td><td>경량 하우스, 묘목장</td><td>빛 통과↑, 입문용</td><td>입문용</td></tr>
+      <tr><td class="pct-cell">TOP-50</td><td>50%</td><td>과채류, 화훼단지</td><td>광·차광 균형, 베스트셀러</td><td>인기 No.1</td></tr>
+      <tr><td class="pct-cell">TOP-70</td><td>70%</td><td>엽채류, 버섯 재배사</td><td>온도 저감 효과 큼</td><td>베스트</td></tr>
+      <tr><td class="pct-cell">TOP-80</td><td>80%</td><td>축사, 주차장 캐노피</td><td>강력한 차광 + 통풍 유지</td><td>추천</td></tr>
+      <tr><td class="pct-cell">TOP-95</td><td>95%</td><td>건축 가림막, 분진 차단</td><td>거의 완전 차단</td><td>고급형</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <h2>현장에 맞는 제품,<br>직접 추천 받으세요.</h2>
+  <p>차광률 선택이 어려우신가요? 작물·시설·면적만 알려주시면 전문 상담원이 최적의 제품을 추천해 드립니다.</p>
+  <div class="cta-buttons">
+    <a href="index.html#contact" class="btn-primary">전화 상담 신청</a>
+    <a href="index.html" class="btn-outline">홈으로 돌아가기</a>
+  </div>
+</section>
+
+<!-- 푸터 -->
+<footer>
+  <strong>TOP 차광망</strong> &nbsp;|&nbsp; 사업자등록번호: 000-00-00000 &nbsp;|&nbsp; 대표: 홍길동 &nbsp;|&nbsp;
+  주소: 경기도 화성시 차광로 123 TOP산업단지 &nbsp;|&nbsp; Tel: 1588-0000<br>
+  © 2026 TOP 차광망. All rights reserved.
+</footer>
+
+<script>
+  function toggleTheme() {
+    var current = document.documentElement.getAttribute('data-theme') || 'light';
+    var next = current === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem('theme', next); } catch (e) {}
+  }
+</script>
+
+</body>
+</html>
